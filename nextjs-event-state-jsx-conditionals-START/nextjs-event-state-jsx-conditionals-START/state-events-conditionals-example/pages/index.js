@@ -1,21 +1,46 @@
-import { MOVIE_LIST } from '../utils/movies'
+import { MOVIE_LIST } from "../utils/movies";
+import { useState } from "react";
+import Head from "next/head";
+import Image from "next/image";
+import styles from "../styles/Home.module.css";
 
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import Alert from "@mui/material/Alert";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 
-import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
 
 export default function Home() {
+  const [search, setSearch] = useState("");
+  const [year, setYear] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // validate the inputs
+    validate();
+    // filter the movies
+  };
+  const isNumber = (value) => {
+    return !isNaN(value);
+  };
+  const validate = () => {
+    // if the inputs are empty its fine
+    if (year.trim() === "" && search.trim() === "") {
+      setErrorMessage("");
+      return;
+    }
+    // going to check that the year is a number and that
+    // it is 4 digits
+    if (!isNumber(year) || year.trim().length !== 4) {
+      setErrorMessage(`${year} is not a valid year.`);
+      return;
+    }
+  };
   return (
     <div>
       <Head>
@@ -30,18 +55,25 @@ export default function Home() {
 
       <main>
         <Container>
-          <Typography variant="h2" component="h2" style={{textAlign: "center"}}>
+          <Typography
+            variant="h2"
+            component="h2"
+            style={{ textAlign: "center" }}
+          >
             Movies
           </Typography>
-          <form style={{width: '100%'}}>
+          <form style={{ width: "100%" }} onSubmit={handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <TextField
                   id="search-field"
                   label="search..."
                   variant="standard"
-                  sx={{width: '100%'}}
-                  
+                  sx={{ width: "100%" }}
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                  }}
+                  value={search}
                 />
               </Grid>
               <Grid item xs={4}>
@@ -49,35 +81,40 @@ export default function Home() {
                   id="year-field"
                   label="year"
                   variant="standard"
-                  sx={{width: '100%'}}
-                 
+                  onChange={(e) => {
+                    setYear(e.target.value);
+                  }}
+                  value={year}
+                  sx={{ width: "100%" }}
                 />
               </Grid>
               <Grid item xs={2}>
-                <Button
-                  type="submit"
-                  variant="contained"
-                >Filter</Button>
+                <Button type="submit" variant="contained">
+                  Filter
+                </Button>
               </Grid>
               <Grid item xs={10}>
-                {/* Add the error message here*/}
+                {errorMessage !== "" && (
+                  <Alert severity="error">{errorMessage}</Alert>
+                )}
               </Grid>
             </Grid>
           </form>
-          <List sx={{width: `100%`}}>
-          { MOVIE_LIST.map((movieData, index)=> {
-              return <ListItem key={index}>
-                <ListItemText>
-                  <Typography variant="p" component="div">
-                    {movieData.name} ({movieData.year})
-                  </Typography>
-                </ListItemText>
-              </ListItem>
-            })
-          }
+          <List sx={{ width: `100%` }}>
+            {MOVIE_LIST.map((movieData, index) => {
+              return (
+                <ListItem key={index}>
+                  <ListItemText>
+                    <Typography variant="p" component="div">
+                      {movieData.name} ({movieData.year})
+                    </Typography>
+                  </ListItemText>
+                </ListItem>
+              );
+            })}
           </List>
         </Container>
       </main>
     </div>
-  )
+  );
 }

@@ -7,6 +7,8 @@ import Button from "@mui/material/Button";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function ToDoList() {
   const [toDoText, setToDoText] = useState("");
@@ -23,7 +25,20 @@ export default function ToDoList() {
   const onToDoTextChange = (event) => {
     setToDoText(event.target.value);
   };
+  const onRemoveTodoClick = (index) => {
+    const ITEMS_TO_REMOVE = 1;
+    console.log(`the todo item at index${index} is ${allTodos[index]}`);
+    // create a copy of the array
+    let newAllTodos = [...allToDos];
 
+    // use splice to remove an instance
+    newAllTodos.splice(index, ITEMS_TO_REMOVE);
+
+    // set state of allToDos
+    setAllToDos(newAllTodos);
+    console.log("onRemoveTodoClick");
+    console.log(index);
+  };
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
@@ -52,6 +67,18 @@ export default function ToDoList() {
             {allToDos.map((toDo, index) => {
               return (
                 <ListItem key={index} divider>
+                  secondaryAction=
+                  {
+                    <IconButton
+                      edge="end"
+                      aria-label="delete"
+                      onClick={() => {
+                        onRemoveTodoClick(index);
+                      }}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  }
                   <ListItemText primary={toDo} />
                 </ListItem>
               );
