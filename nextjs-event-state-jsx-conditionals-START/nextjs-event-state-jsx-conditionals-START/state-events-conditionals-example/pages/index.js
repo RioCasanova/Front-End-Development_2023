@@ -14,23 +14,48 @@ import Typography from "@mui/material/Typography";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
+import SimpleListItem from "../components/SimpleListItem";
 
 export default function Home() {
   const [search, setSearch] = useState("");
   const [year, setYear] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [movies, setMovies] = useState(MOVIE_LIST);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     // validate the inputs
     validate();
     // filter the movies
+    if (errorMessage === "") {
+      filterMovies();
+    }
+  };
+  const filterMovies = () => {
+    // create a copy of the array
+    let searchMovies = [...MOVIE_LIST];
+
+    // use filter to filter through the items
+    // Only if there are values in the search or year
+    if (search.trim() !== "") {
+      searchMovies = searchMovies.filter((movie) => {
+        return movie.name.toLowerCase().includes(search.toLowerCase());
+      });
+    }
+    if (year.trim() !== "") {
+      searchMovies = searchMovies.filter((movie) => {
+        return movie.year === parseInt(year);
+      });
+    }
+    // then we are going to set the state
+    setMovies(searchMovies);
   };
   const isNumber = (value) => {
     return !isNaN(value);
   };
   const validate = () => {
     // if the inputs are empty its fine
-    if (year.trim() === "" && search.trim() === "") {
+    if (year.trim() === "") {
       setErrorMessage("");
       return;
     }
@@ -40,6 +65,8 @@ export default function Home() {
       setErrorMessage(`${year} is not a valid year.`);
       return;
     }
+    // at the end if this executes
+    setErrorMessage("");
   };
   return (
     <div>
@@ -101,15 +128,17 @@ export default function Home() {
             </Grid>
           </form>
           <List sx={{ width: `100%` }}>
-            {MOVIE_LIST.map((movieData, index) => {
+            {movies.length === 0 ? (
+              <SimpleListItem text={"There are no results, please try again"} />
+            ) : (
+              <SimpleListItem text={`Found ${movies.length} result(s)`} />
+            )}
+            {movies.map((movieData, index) => {
               return (
-                <ListItem key={index}>
-                  <ListItemText>
-                    <Typography variant="p" component="div">
-                      {movieData.name} ({movieData.year})
-                    </Typography>
-                  </ListItemText>
-                </ListItem>
+                <SimpleListItem
+                  key={index}
+                  text={`${movieData.name} (${movieData.year})`}
+                />
               );
             })}
           </List>
