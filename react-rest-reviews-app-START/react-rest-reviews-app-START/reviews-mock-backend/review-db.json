@@ -3,7 +3,7 @@
     {
       "id": 1,
       "title": "Wheel of time",
-      "comment": "Books were great but the show was just okay. ",
+      "comment": "Books were awesome, second season of the show was great",
       "rating": 8
     },
     {
@@ -11,6 +11,18 @@
       "title": "The Lord of the rings",
       "comment": "A classic movie and a classic book series as well!",
       "rating": 10
-    } 
+    },
+    {
+      "title": "Fight Club",
+      "comment": "Great movie, great ending to the book",
+      "rating": 9,
+      "id": 3
+    },
+    {
+      "title": "The Hunger Games",
+      "comment": "This movie was good, but the ending sucks",
+      "rating": "8",
+      "id": 4
+    }
   ]
 }
