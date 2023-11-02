@@ -34,4 +34,18 @@ const postReview = ({ title, comment, rating }) => {
       return reviewData; // an object
     });
 };
-export { getReviews, postReview };
+
+const deleteReview = (id) => {
+  // to use the data from this function we
+  // need to return the entire promise
+  return fetch(`${BASE_URL}/reviews/${id}`, {
+    method: "DELETE",
+  })
+    .then((response) => {
+      return response.json(); // this is a promise
+    })
+    .then((data) => {
+      return data; // this is what is returned from the function
+    });
+};
+export { getReviews, postReview, deleteReview };

@@ -44,10 +44,13 @@ export default function Home() {
           {reviews.map((adaptation, index) => {
             return (
               <AdaptationReviewCard
-                key={index}
+                key={adaptation.id}
+                id={adaptation.id}
                 title={adaptation.title}
                 comment={adaptation.comment}
                 rating={adaptation.rating}
+                reviews={reviews}
+                setReviews={setReviews}
               />
             );
           })}
