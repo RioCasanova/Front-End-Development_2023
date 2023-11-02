@@ -6,8 +6,17 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Avatar from "@mui/material/Avatar";
 import { deleteReview } from "../utils/api/reviews";
+import { useEffect } from "react";
 
 export default function AdaptationReviewCard(props) {
+  // When the card is removed we want the snack message to fire
+  useEffect(() => {
+    // return the callback which is the function or code that
+    // is called when the component is removed
+    return () => {
+      props.openSnackMessage(`deleted review for "${props.title}"`);
+    };
+  }, []);
   const removeReview = () => {
     console.log(`removing review ${props.id}`);
     // remove it from the back end

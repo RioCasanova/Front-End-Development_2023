@@ -1,23 +1,42 @@
 import Head from "next/head";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
-
+import Snackbar from "@mui/material/Snackbar";
 // Component imports
 import NavBar from "../components/NavBar";
 import AdaptationReviewCard from "../components/AdaptationReviewCard";
-import { useState } from "react";
+import { useState, useEffect, useSyncExternalStore } from "react";
 import { getReviews } from "../utils/api/reviews";
 import FormAdaptationReview from "../components/FormAdaptationReview";
 
 export default function Home() {
   const [reviews, setReviews] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [snackMessage, setSnackMessage] = useState("");
 
+  // When the page loads or "mounts", the code block executes
+  // try to keep the code within this block to a minimum to avoid errors
+  useEffect(() => {
+    loadAllReviews();
+  }, []);
+
+  const openSnackMessage = (message) => {
+    setSnackMessage(message);
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
   const loadAllReviews = () => {
     // gettting it from the backend
     getReviews().then((reviewsData) => {
       // setting it on the front end
       setReviews(reviewsData);
+      openSnackMessage("data fetched successfully");
     });
   };
 
@@ -33,16 +52,7 @@ export default function Home() {
         <Container maxWidth="md">
           {/* this is where the form was  */}
           <FormAdaptationReview reviews={reviews} setReviews={setReviews} />
-          <Box
-            sx={{
-              pt: 2,
-              pb: 2,
-            }}
-          >
-            <Button variant="contained" onClick={loadAllReviews}>
-              Load All Current Reviews
-            </Button>
-          </Box>
+          {/* This is where the box was for load all reviews */}
           {reviews.map((adaptation, index) => {
             return (
               <AdaptationReviewCard
@@ -53,9 +63,16 @@ export default function Home() {
                 rating={adaptation.rating}
                 reviews={reviews}
                 setReviews={setReviews}
+                openSnackMessage={openSnackMessage}
               />
             );
           })}
+          <Snackbar
+            open={open}
+            autoHideDuration={6000}
+            onClose={handleClose}
+            message={snackMessage}
+          />
         </Container>
       </main>
     </div>
