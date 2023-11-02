@@ -14,7 +14,9 @@ export default function Home() {
   const [reviews, setReviews] = useState([]);
 
   const loadAllReviews = () => {
+    // gettting it from the backend
     getReviews().then((reviewsData) => {
+      // setting it on the front end
       setReviews(reviewsData);
     });
   };
