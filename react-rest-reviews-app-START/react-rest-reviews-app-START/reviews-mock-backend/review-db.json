@@ -23,6 +23,18 @@
       "comment": "This movie was good, but the ending sucks",
       "rating": "8",
       "id": 4
+    },
+    {
+      "title": "Spiderman",
+      "comment": "a classic",
+      "rating": "8",
+      "id": 5
+    },
+    {
+      "title": "gfsfgdsg",
+      "comment": "gdfsgdfsgfg",
+      "rating": "9",
+      "id": 6
     }
   ]
 }

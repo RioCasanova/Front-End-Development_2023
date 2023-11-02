@@ -1,91 +1,24 @@
 import Head from "next/head";
-import Image from "next/image";
-
-import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
-
 import Container from "@mui/material/Container";
 
-import InputLabel from "@mui/material/InputLabel";
-import Grid from "@mui/material/Grid";
-import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
-import FormControlLabel from "@mui/material/FormControlLabel";
-
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-
+// Component imports
 import NavBar from "../components/NavBar";
 import AdaptationReviewCard from "../components/AdaptationReviewCard";
 import { useState } from "react";
+import { getReviews } from "../utils/api/reviews";
+import FormAdaptationReview from "../components/FormAdaptationReview";
 
 export default function Home() {
   const [reviews, setReviews] = useState([]);
-  const [title, setTitle] = useState("");
-  const [comment, setComment] = useState("");
-  const [rating, setRating] = useState("");
-  const MOCK_ADAPTATION_RATING = [
-    {
-      title: "Fight Club",
-      comment: "Great movie and book",
-      rating: 10,
-    },
-  ];
-  const loadAllReviews = async () => {
-    const REVIEWS_URL = "http://localhost:5000/reviews";
-    const response = await fetch(REVIEWS_URL, { method: "GET" });
-    const reviewsData = await response.json();
 
-    setReviews(reviewsData);
-  };
-  // We are posting to the server here
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const REVIEWS_URL = "http://localhost:5000/reviews";
-    fetch(REVIEWS_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title: title,
-        comment: comment,
-        rating: rating,
-      }),
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((newReviewData) => {
-        console.log(newReviewData);
-        const newReviews = [...reviews, newReviewData];
-        setReviews(newReviews);
-        setTitle("");
-        setComment("");
-        setRating("");
-      });
+  const loadAllReviews = () => {
+    getReviews().then((reviewsData) => {
+      setReviews(reviewsData);
+    });
   };
 
-  // This is how you fetch with promises
-  // const loadAllReviews = async () => {
-  //   const REVIEWS_URL = "http://localhost:5000/reviews";
-  //   fetch(REVIEWS_URL, { method: "GET" })
-  //   .then((response) => {
-  //     return response.json()
-  //   })
-  //   .then((data) => {
-  //     setReviews(data)
-  //   })
-  // };
   return (
     <div>
       <Head>
@@ -96,74 +29,8 @@ export default function Home() {
       <NavBar title={"Adaptation Reviews"} />
       <main>
         <Container maxWidth="md">
-          <form onSubmit={handleSubmit}>
-            <Grid container spacing={3}>
-              <Grid item xs={12} sm={12}>
-                <TextField
-                  id="title"
-                  name="title"
-                  label="Adaptation Title"
-                  fullWidth
-                  variant="standard"
-                  value={title}
-                  onChange={(event) => {
-                    setTitle(event.target.value);
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={12}>
-                <TextField
-                  id="review-comments"
-                  name="review-comments"
-                  label="Comments"
-                  fullWidth
-                  variant="standard"
-                  value={comment}
-                  onChange={(event) => {
-                    setComment(event.target.value);
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={12}>
-                <FormControl>
-                  <FormLabel id="adaptation-rating">Rating</FormLabel>
-                  <RadioGroup
-                    row
-                    aria-labelledby="adaptation-rating"
-                    name="rating-buttons-group"
-                    value={rating}
-                    onChange={(event) => {
-                      setRating(event.target.value);
-                    }}
-                  >
-                    <FormControlLabel value="1" control={<Radio />} label="1" />
-                    <FormControlLabel value="2" control={<Radio />} label="2" />
-                    <FormControlLabel value="3" control={<Radio />} label="3" />
-                    <FormControlLabel value="4" control={<Radio />} label="4" />
-                    <FormControlLabel value="5" control={<Radio />} label="5" />
-                    <FormControlLabel value="6" control={<Radio />} label="6" />
-                    <FormControlLabel value="7" control={<Radio />} label="7" />
-                    <FormControlLabel value="8" control={<Radio />} label="8" />
-                    <FormControlLabel value="9" control={<Radio />} label="9" />
-                    <FormControlLabel
-                      value="10"
-                      control={<Radio />}
-                      label="10"
-                    />
-                  </RadioGroup>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={12}>
-                <Button
-                  variant="contained"
-                  type="submit"
-                  onClick={loadAllReviews}
-                >
-                  Add New Review
-                </Button>
-              </Grid>
-            </Grid>
-          </form>
+          {/* this is where the form was  */}
+          <FormAdaptationReview reviews={reviews} setReviews={setReviews} />
           <Box
             sx={{
               pt: 2,
