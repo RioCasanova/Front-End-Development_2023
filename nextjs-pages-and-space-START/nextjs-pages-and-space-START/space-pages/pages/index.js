@@ -54,7 +54,8 @@ export default function Home() {
           {agencyDetails.results.map((agency) => {
             return (
               <AgencyCard
-                key={agency.id}
+                key={agency.id} // just for internal purposes
+                id={agency.id}
                 imageUrl={agency.image_url}
                 name={agency.name}
                 abbreviation={agency.abbrev}
