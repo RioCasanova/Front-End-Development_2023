@@ -24,7 +24,7 @@ export default function AgencyCard(props) {
           component="img"
           height="140"
           image={props.imageUrl}
-          alt="green iguana"
+          alt={props.name}
         />
       )}
       <CardContent>

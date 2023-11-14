@@ -12,10 +12,12 @@ import { getAgencies } from "@utils/api/agencies";
 export default function Home() {
   // Create a variable of state
   const [agencyDetails, setAgencyDetails] = useState();
-  // WHen the component mounts we are going
+
+  // When the component mounts we are going
   useEffect(() => {
     loadAgencies();
   }, []);
+
   // to load the data (get from backend and setting state)
   const loadAgencies = async () => {
     // get from backend
@@ -24,6 +26,7 @@ export default function Home() {
     setAgencyDetails(data);
     console.log(data);
   };
+
   // Loop through the data
 
   // if agencies is undefined it means it has not yet loaded
@@ -31,6 +34,7 @@ export default function Home() {
   if (!agencyDetails) {
     return <div>Loading...</div>;
   }
+
   return (
     <div>
       <Head>
