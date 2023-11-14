@@ -43,15 +43,11 @@ export default function SpaceCraft() {
       <Container sx={{ paddingTop: 2 }} component="main">
         <Grid container>
           <Grid item xs={10}>
-            <img src={agency.logo_url} style={{ width: "120px" }} />
             <Typography variant="h3">{spacecraft.name}</Typography>
           </Grid>
           <Grid item xs={4}>
             <Typography variant="h5">SpaceCraft Information</Typography>
-            <SimpleDetailsCard
-              title="Administrator"
-              description={agency.administrator}
-            />
+            <SimpleDetailsCard title="Administrator" />
           </Grid>
         </Grid>
       </Container>

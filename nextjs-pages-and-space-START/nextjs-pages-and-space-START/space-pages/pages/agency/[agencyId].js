@@ -71,7 +71,7 @@ export default function Agency() {
               return (
                 <SimpleDetailsCard
                   description={spacecraft.name}
-                  buttonCallBack={() => {
+                  buttonCallback={() => {
                     console.log(spacecraft.id);
                     goToSpacecraft(spacecraft);
                   }}
