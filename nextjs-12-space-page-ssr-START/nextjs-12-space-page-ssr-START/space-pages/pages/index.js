@@ -1,29 +1,44 @@
+import { useEffect, useState } from "react";
 
-import { useEffect, useState } from 'react'
+import Head from "next/head";
 
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
 
-import Head from 'next/head'
+import AgencyCard from "@components/AgencyCard";
+import NavBar from "@components/NavBar";
 
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
+import { getAgencies } from "@utils/api/agencies";
 
-import AgencyCard from '@components/AgencyCard';
-import NavBar from '@components/NavBar';
+// server-side rendering technique
 
-import { getAgencies } from '@utils/api/agencies'
+export async function getServerSideProps() {
+  // get data from backend
+  const agencies = await getAgencies();
+  // pass data through props to the page component
+  return {
+    props: {
+      agencies: agencies,
+    },
+  };
+}
 
-export default function Home() {
-  const [agenciesData, setAgenciesData] = useState([])
-  
-  useEffect(()=> {
-    // fire this on load.
-    getAgencies().then((data)=> {
-      console.log(data)
-      setAgenciesData(data.results)
-    })
-  }, [])
+export default function Home(props) {
+  // Server-Side rendering
+  console.log(props);
+  const agenciesData = props.agencies.results;
 
+  // client-side rendering strategy
+  // const [agenciesData, setAgenciesData] = useState([]);
+
+  // useEffect(()=> {
+  //   // fire this on load.
+  //   getAgencies().then((data)=> {
+  //     console.log(data)
+  //     setAgenciesData(data.results)
+  //   })
+  // }, [])
 
   return (
     <div>
@@ -33,23 +48,21 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-        <NavBar />
+      <NavBar />
 
-        <Container sx={{paddingTop:2}} component="main" maxWidth="xs">
-
-          <Typography variant="h3">
-            Space Agencies
-          </Typography>
-          <Box
-            sx={{
-              marginTop: 2,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
-            {agenciesData.map((agency)=> {
-              return <AgencyCard
+      <Container sx={{ paddingTop: 2 }} component="main" maxWidth="xs">
+        <Typography variant="h3">Space Agencies</Typography>
+        <Box
+          sx={{
+            marginTop: 2,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          {agenciesData.map((agency) => {
+            return (
+              <AgencyCard
                 key={agency.id}
                 id={agency.id}
                 imageUrl={agency.image_url}
@@ -57,11 +70,10 @@ export default function Home() {
                 abbreviation={agency.abbrev}
                 description={agency.description}
               />
-            })}
-
-          </Box>
-        </Container>
-
+            );
+          })}
+        </Box>
+      </Container>
     </div>
-  )
+  );
 }
