@@ -1,8 +1,12 @@
-import '../styles/globals.css'
+import "../styles/globals.css";
+import AppNotification from "../components/context/AppNotification";
 
 function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
-
+  return (
+    <AppNotification>
+      <Component {...pageProps} />;
+    </AppNotification>
+  );
 }
 
-export default MyApp
+export default MyApp;
